@@ -35,15 +35,22 @@ text][options].  The configuration is separated from the users config for
 neovim.  The main config file is `~/.config/nvimpager/init.vim`.  See [the
 manpage][configuration] for further explanation.
 
-## Technical stuff
+## Installation
+
+<a href="https://repology.org/metapackage/nvimpager/versions">
+    <img src="https://repology.org/badge/vertical-allrepos/nvimpager.svg"
+	 alt="Packaging status" align="right">
+</a>
+
+Nvimpager is already packaged for some distributions. If not for yours, you can
+install it manually, read on.
 
 ### Dependencies
 
-* [neovim] ≥ v0.3.0
+* [neovim] ≥ v0.4.0
 * [bash]
-* ([curl] during installation)
-* ([busted] for running the tests)
-* ([pandoc] to build the man page)
+* [busted] (for running the tests)
+* [pandoc] (to build the man page)
 
 ### Installation instructions
 
@@ -55,31 +62,24 @@ variables:
 make PREFIX=$HOME/.local install
 ```
 
-### Development
+## Development
 
 Nvimpager is developed on [Github][nvimpager] where you are very much invited
 to [post][issues] bug reports, feature or pull requests!  The test can be run
 with `make test`.  They are also run on travis: [![Build Status]][travis]
 
-#### Known Bugs (and non features)
+### Known Bugs (and non features)
 
 * if reading from stdin, nvimpager (like nvim) waits for EOF until it starts up
 * large files are slowing down neovim on startup (less does a better, i.e.
   faster and more memory efficient job at paging large files)
 
-#### TODO and ideas list
+### TODO and ideas list
 
-* show a short message in the cmdline like less and vimpager do (file and help
-  information)
 * see how [neovim#7428](https://github.com/neovim/neovim/issues/7438) and
   [neovim#8246](https://github.com/neovim/neovim/issues/8246) are resolved and
-  maybe move more code (logic) from bash to lua
-* check if terminal buffers can be used to render ansi escape codes,
-  alternatively ...
-* check license options for bundling the AnsiEsc plugin, alternatively ...
-* see if nvim_buf_add_highlight() can be used to do basically the same stuff
-  that AnsiEsc does
-* implement some more keybindings that make it behave more like less
+  maybe move more code (logic) from bash to lua (bash's `[[ -t ... ]]` can be
+  replaced by `has('ttyin')`, `has('ttyout')`)
 * proper lazy pipe reading while paging (like less) to improve startup time and
   also memory usage for large input on pipes (maybe `stdioopen()` can be used?)
 * properly kill the nvim process when the bash script is killed, alternatively
@@ -99,7 +99,6 @@ The project is licensed under a BSD-2-clause license.  See the
 [neovim]: https://github.com/neovim/neovim
 [vimpager]: https://github.com/rkitover/vimpager
 [bash]: http://www.gnu.org/software/bash/bash.html
-[curl]: https://curl.haxx.se
 [busted]: http://olivinelabs.com/busted/
 [pandoc]: http://pandoc.org/
 [Build Status]: https://travis-ci.org/lucc/nvimpager.svg?branch=develop
