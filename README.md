@@ -50,7 +50,7 @@ install it manually, read on.
 * [neovim] ≥ v0.4.0
 * [bash]
 * [busted] (for running the tests)
-* [pandoc] (to build the man page)
+* [scdoc] (to build the man page)
 
 ### Installation instructions
 
@@ -64,7 +64,7 @@ make PREFIX=$HOME/.local install
 
 ## Development
 
-Nvimpager is developed on [Github][nvimpager] where you are very much invited
+Nvimpager is developed on [GitHub][nvimpager] where you are very much invited
 to [post][issues] bug reports, feature or pull requests!  The test can be run
 with `make test`.  They are also run on travis: [![Build Status]][travis]
 
@@ -94,12 +94,12 @@ The project is licensed under a BSD-2-clause license.  See the
 
 [nvimpager]: https://github.com/lucc/nvimpager
 [issues]: https://github.com/lucc/nvimpager/issues
-[options]: ./nvimpager.md#OPTIONS
-[configuration]: ./nvimpager.md#CONFIGURATION
+[options]: ./nvimpager.md#command-line-options
+[configuration]: ./nvimpager.md#configuration
 [neovim]: https://github.com/neovim/neovim
 [vimpager]: https://github.com/rkitover/vimpager
-[bash]: http://www.gnu.org/software/bash/bash.html
-[busted]: http://olivinelabs.com/busted/
-[pandoc]: http://pandoc.org/
-[Build Status]: https://travis-ci.org/lucc/nvimpager.svg?branch=develop
-[travis]: https://travis-ci.org/lucc/nvimpager
+[bash]: https://www.gnu.org/software/bash/bash.html
+[busted]: https://olivinelabs.com/busted/
+[scdoc]: https://git.sr.ht/~sircmpwn/scdoc
+[Build Status]: https://travis-ci.com/lucc/nvimpager.svg?branch=develop
+[travis]: https://travis-ci.com/github/lucc/nvimpager

@@ -1,32 +1,55 @@
 language: minimal
-dist: bionic
+dist: focal
+
+addons:
+  apt: &apt_packages
+    - lua-busted
+    - neovim
+    - scdoc
+  homebrew:
+    - neovim
+    - scdoc
+    - luarocks
+
 matrix:
   include:
     - os: linux
-      env: NVIM_VERSION=stable
     - os: linux
-      env: NVIM_VERSION=unstable
+      env: UNSTABLE=true
+      addons:
+        apt:
+          source: { sourceline: 'ppa:neovim-ppa/unstable' }
+          packages: *apt_packages
+    - os: freebsd
+      addons:
+        pkg:
+          - neovim
+          - scdoc
+          - lua51-luarocks
+      env: BUSTED="$HOME/.luarocks/bin/busted --exclude-tags=osx_pending"
     - os: osx
-      osx_image: xcode10.3
+      # Older versions have trouble with homebrew.  When the osx builds start
+      # to fail again or take to long try updating this first.
+      osx_image: xcode12.5
+      env: BUSTED="$HOME/.luarocks/bin/busted --exclude-tags=osx_pending"
   allow_failures:
     - os: linux
-      env: NVIM_VERSION=unstable
+      env: UNSTABLE=true
+
 before_install: |
-  set -e
-  if [[ "$TRAVIS_OS_NAME" = osx ]]; then
-    brew update
-    brew install neovim pandoc luarocks
-  else
-    sudo add-apt-repository -y ppa:neovim-ppa/$NVIM_VERSION
-    sudo apt-get update
-    sudo apt-get install -y --no-install-recommends neovim pandoc luarocks
-  fi
-  luarocks --local install busted
-install: make install PREFIX=$HOME/.local
+  case "$TRAVIS_OS_NAME" in
+    freebsd) luarocks51 --local install busted;;
+    osx)     luarocks   --local install busted;;
+  esac
+
+install: |
+  case "$TRAVIS_OS_NAME" in
+    freebsd) gmake install PREFIX=$HOME/.local;;
+    *)       make  install PREFIX=$HOME/.local;;
+  esac
+
 script: |
-  if [[ "$TRAVIS_OS_NAME" = osx ]]; then
-    BUSTED="$HOME/.luarocks/bin/busted --exclude-tags=osx_pending"
-  else
-    BUSTED=$HOME/.luarocks/bin/busted
-  fi
-  make test BUSTED="$BUSTED"
+  case "$TRAVIS_OS_NAME" in
+    freebsd) gmake test BUSTED="$BUSTED";;
+    *)       make  test BUSTED="${BUSTED:-busted}";;
+  esac
